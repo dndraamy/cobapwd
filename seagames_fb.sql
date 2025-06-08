@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 08 Jun 2025 pada 03.50
+-- Waktu pembuatan: 01 Jun 2025 pada 19.51
 -- Versi server: 10.4.32-MariaDB
 -- Versi PHP: 8.2.12
 
@@ -74,12 +74,36 @@ INSERT INTO `klasemen` (`id`, `grup`, `id_negara`, `main`, `menang`, `seri`, `ka
 (2, 'A', 8, 4, 3, 0, 1, 4, 5, 9),
 (3, 'A', 5, 4, 1, 1, 2, 6, 5, 4),
 (4, 'A', 9, 4, 1, 0, 3, 3, 8, 3),
+(5, 'A', 7, 4, 0, 1, 3, 1, 8, 1),
 (6, 'B', 2, 4, 3, 1, 0, 10, 3, 10),
 (7, 'B', 3, 4, 3, 1, 0, 8, 3, 10),
 (8, 'B', 4, 4, 2, 0, 2, 13, 5, 6),
 (9, 'B', 10, 4, 0, 1, 3, 2, 11, 1),
-(10, 'B', 6, 4, 0, 1, 3, 2, 13, 1),
-(16, 'A', 7, 4, 2, 0, 2, 8, 4, 6);
+(10, 'B', 6, 4, 0, 1, 3, 2, 13, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `last_match`
+--
+
+CREATE TABLE `last_match` (
+  `id` int(11) NOT NULL,
+  `judul` varchar(20) NOT NULL,
+  `negara1` varchar(100) DEFAULT NULL,
+  `negara2` varchar(100) DEFAULT NULL,
+  `skor1` int(11) DEFAULT NULL,
+  `skor2` int(11) DEFAULT NULL,
+  `stadion` varchar(100) DEFAULT NULL,
+  `tanggal` date DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data untuk tabel `last_match`
+--
+
+INSERT INTO `last_match` (`id`, `judul`, `negara1`, `negara2`, `skor1`, `skor2`, `stadion`, `tanggal`) VALUES
+(1, 'FINAL SEA GAMES 2023', 'Indonesia', 'Thailand', 5, 2, 'Stadion Apakek', '2023-05-27');
 
 -- --------------------------------------------------------
 
@@ -101,7 +125,7 @@ CREATE TABLE `negara` (
 --
 
 INSERT INTO `negara` (`id_negara`, `nama_negara`, `pelatih`, `nama_stadion`, `deskripsi`, `bendera`) VALUES
-(1, 'Indonesia', 'Indra Sjafri', 'Stadion Utama Gelora BungKarno', 'Indonesia mulai berkompetisi pada 1977 dan menjadi tuan rumah empat kali. Sering menempati posisi puncak perolehan medali SEA Games.', 'https://upload.wikimedia.org/wikipedia/commons/0/0b/Flag_of_Indonesia.png'),
+(1, 'Indonesia', 'Indra Sjafri', 'Stadion Utama Gelora Bung Karno', 'Indonesia mulai berkompetisi pada 1977 dan menjadi tuan rumah empat kali. Sering menempati posisi puncak perolehan medali SEA Games.', 'https://upload.wikimedia.org/wikipedia/commons/0/0b/Flag_of_Indonesia.png'),
 (2, 'Thailand', 'Issara Sritaro', 'Rajamangala Stadium', 'Thailand adalah pendiri SEAGF dan selalu masuk tiga besar SEA Games. Jadi tuan rumah pertama untuk nama baru SEA Games.', 'https://upload.wikimedia.org/wikipedia/commons/a/a9/Flag_of_Thailand.svg'),
 (3, 'Vietnam', 'Philippe Troussier', 'M? D?nh National Stadium', 'Vietnam mulai ikut SEA Games sejak 1989. Menjadi juara umum pada 2003, 2021, dan 2023 serta tuan rumah dua kali.', 'https://upload.wikimedia.org/wikipedia/commons/2/21/Flag_of_Vietnam.svg'),
 (4, 'Malaysia', 'E. Elavarasan', 'Bukit Jalil National Stadium', 'Malaysia adalah pendiri SEAGF dan mengusulkan perluasan anggota SEA Games, menjadi tuan rumah SEA Games 1977.', 'https://upload.wikimedia.org/wikipedia/commons/6/66/Flag_of_Malaysia.svg'),
@@ -111,6 +135,22 @@ INSERT INTO `negara` (`id_negara`, `nama_negara`, `pelatih`, `nama_stadion`, `de
 (8, 'Myanmar', 'Michael Feichtenbeiner', 'Thuwunna Stadium', 'Myanmar, sebelumnya Burma, adalah pendiri SEAP Games dan menjadi tuan rumah terakhir kali pada 2013.', 'https://upload.wikimedia.org/wikipedia/commons/8/8c/Flag_of_Myanmar.svg'),
 (9, 'Timor-Leste', 'Park Soon-tae', 'Dili Municipal Stadium', 'Timor Leste berpartisipasi pertama kali pada 2003 dan meraih medali emas pertamanya pada 2011.', 'https://upload.wikimedia.org/wikipedia/commons/2/26/Flag_of_East_Timor.svg'),
 (10, 'Laos', 'Michael Weiss', 'New Laos National Stadium', 'Laos ikut SEA Games 2023 dengan 576 atlet dan bertanding di 32 cabang olahraga.', 'https://upload.wikimedia.org/wikipedia/commons/5/56/Flag_of_Laos.svg');
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `notifications`
+--
+
+CREATE TABLE `notifications` (
+  `id_notifikasi` int(11) NOT NULL,
+  `id_user` int(11) DEFAULT NULL,
+  `id_negara` int(11) DEFAULT NULL,
+  `judul` varchar(255) DEFAULT NULL,
+  `pesan` text DEFAULT NULL,
+  `waktu_dikirim` datetime DEFAULT current_timestamp(),
+  `dibaca` tinyint(1) DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -136,76 +176,7 @@ INSERT INTO `notifikasi` (`id`, `id_user`, `id_pertandingan`, `judul`, `pesan`, 
 (1, 1, 20, 'hai', 'halo', 1, '2025-06-01 09:55:48'),
 (2, 1, 20, 'FINAL : Indonesia VS Thailand', 'jangan lupa yaaa', 1, '2025-06-01 09:58:11'),
 (3, 1, 4, '!!', 'FINAL INDO VS THAILAND JAM 19.00', 1, '2025-06-01 10:04:14'),
-(6, 1, 9, 'hai', 'jangn lupa besok indo final cuy', 1, '2025-06-01 14:09:55'),
-(7, 1, 4, 'p', 'pp', 1, '2025-06-02 04:58:53'),
-(8, 1, 1, 'p', 'p', 1, '2025-06-02 04:59:34'),
-(9, 1, 3, '[FINAL]', 'ind vs viet cuy', 1, '2025-06-02 10:31:43'),
-(10, 1, 6, '[FINAL]', 'papapaappa', 1, '2025-06-02 10:39:52'),
-(11, 1, 4, '[FINAL!!!]', 'Jangan lewatkan! Indonesia vs Thailand malam ini! 🏆⚽️', 1, '2025-06-02 13:05:48'),
-(12, 1, 3, '[F I N A L]', 'Jangan lewatkan! Indonesia vs Thailand malam ini! 🏆⚽️', 1, '2025-06-02 13:06:57'),
-(13, 1, 19, '[FINAL]', 'g', 1, '2025-06-02 14:45:30'),
-(14, 1, 19, '[FINAL]', 'ttt', 1, '2025-06-02 14:47:40'),
-(15, 1, 4, 'p', 'pp', 1, '2025-06-02 17:32:41'),
-(16, 1, 4, '[FINAL]', 'yyyyy', 1, '2025-06-02 18:23:15'),
-(17, 1, 3, '[FINAL]', 'tyty', 1, '2025-06-02 18:44:24'),
-(18, 1, 3, '[FINAL]', 'yu', 1, '2025-06-02 19:42:34'),
-(19, 1, 13, '[FINAL]', 'halo', 1, '2025-06-02 20:06:33'),
-(20, 1, 10, '[FINAL]', 'indo vs thai', 1, '2025-06-02 20:52:40'),
-(21, 1, 7, 'y', 'y', 1, '2025-06-02 20:53:19'),
-(22, 1, 6, 'p', 'y', 1, '2025-06-02 20:54:05'),
-(23, 1, 6, '[FINAL]', 'tyty', 1, '2025-06-02 20:55:20'),
-(24, 1, 3, '[FINAL]', 'apakek', 1, '2025-06-03 01:39:27'),
-(25, 1, 5, '[FINAL]', 'apakek', 1, '2025-06-03 01:40:18'),
-(26, 1, 1, '[FINAL]', 'y', 1, '2025-06-03 01:42:15'),
-(27, 1, 7, '[FINAL]', 'asd', 1, '2025-06-03 01:46:40'),
-(28, 1, 5, '[FINAL]', 'ty', 1, '2025-06-03 01:47:11'),
-(29, 1, 4, '[FINAL]', 'tyty', 1, '2025-06-03 01:48:01'),
-(30, 1, 6, '[FINAL]', 'ghgh', 1, '2025-06-03 01:49:38'),
-(31, 1, 6, '[FINAL]', 'ghg', 1, '2025-06-03 01:50:09'),
-(32, 1, 4, '[FINAL]', 'tyty', 1, '2025-06-03 01:50:41'),
-(33, 1, 5, '[FINAL]', 'ghgh', 1, '2025-06-03 01:54:15'),
-(34, 1, 5, '[FINAL]', 'ggh', 1, '2025-06-03 01:54:47'),
-(35, 1, 5, '[FINAL]', 'agh', 1, '2025-06-03 01:56:50'),
-(36, 1, 4, '[FINAL]', 'indo vs thailand', 1, '2025-06-03 02:12:00'),
-(37, 8, 4, '[FINAL]', 'indo vs thailand', 1, '2025-06-03 02:12:00'),
-(38, 1, 6, '[FINAL]', 'uyu', 1, '2025-06-03 07:21:06'),
-(39, 8, 6, '[FINAL]', 'uyu', 0, '2025-06-03 07:21:06'),
-(40, 1, 5, '[FINAL]', 'yyy', 1, '2025-06-05 13:49:13'),
-(41, 8, 5, '[FINAL]', 'yyy', 0, '2025-06-05 13:49:13'),
-(42, 1, 6, '[SEMIFINAL] Indonesia VS Vietnam| SEA GAMES ', 'yy', 1, '2025-06-05 13:49:50'),
-(43, 8, 6, '[SEMIFINAL] Indonesia VS Vietnam| SEA GAMES ', 'yy', 0, '2025-06-05 13:49:50'),
-(44, 1, 7, '[FINAL]', 'tyty', 1, '2025-06-05 13:50:12'),
-(45, 8, 7, '[FINAL]', 'tyty', 0, '2025-06-05 13:50:12'),
-(46, 1, 6, '[FINAL]', 'tytt', 1, '2025-06-05 13:51:36'),
-(47, 8, 6, '[FINAL]', 'tytt', 0, '2025-06-05 13:51:36'),
-(48, 1, 5, '[FINAL]', 'tyty', 1, '2025-06-05 13:58:23'),
-(49, 8, 5, '[FINAL]', 'tyty', 0, '2025-06-05 13:58:23'),
-(50, 1, 4, '[FINAL]', 'ghgh', 1, '2025-06-05 13:58:51'),
-(51, 8, 4, '[FINAL]', 'ghgh', 0, '2025-06-05 13:58:51'),
-(52, 1, 1, '[FINAL]', 'hghgh', 1, '2025-06-05 14:00:18'),
-(53, 8, 1, '[FINAL]', 'hghgh', 0, '2025-06-05 14:00:18'),
-(54, 1, 6, '[GRUP B] Thailand VS Malaysia | SEA GAMES ', 'yyy', 1, '2025-06-05 14:00:53'),
-(55, 8, 6, '[GRUP B] Thailand VS Malaysia | SEA GAMES ', 'yyy', 0, '2025-06-05 14:00:53'),
-(56, 1, 6, '[FINAL]', 'tytty', 1, '2025-06-05 14:01:32'),
-(57, 8, 6, '[FINAL]', 'tytty', 0, '2025-06-05 14:01:32'),
-(58, 1, 7, '[FINAL]', 'BBBBBBBBB', 1, '2025-06-05 14:03:58'),
-(59, 8, 7, '[FINAL]', 'BBBBBBBBB', 0, '2025-06-05 14:03:58'),
-(60, 1, 5, '[FINAL]', '123', 1, '2025-06-05 14:06:23'),
-(61, 8, 5, '[FINAL]', '123', 0, '2025-06-05 14:06:23'),
-(62, 1, 3, 'template judul (satu)', 'ghgh', 1, '2025-06-05 14:25:38'),
-(63, 8, 3, 'template judul (satu)', 'ghgh', 0, '2025-06-05 14:25:38'),
-(64, 1, 7, '[FINAL]', 'yyyyyyyyyyyyyyyyy', 1, '2025-06-05 14:26:58'),
-(65, 8, 7, '[FINAL]', 'yyyyyyyyyyyyyyyyy', 0, '2025-06-05 14:26:58'),
-(66, 1, 4, '[FINAL]', 'bbbbbbbbbbbbb', 1, '2025-06-05 14:28:18'),
-(67, 8, 4, '[FINAL]', 'bbbbbbbbbbbbb', 0, '2025-06-05 14:28:18'),
-(68, 1, 5, '[FINAL]', 'asd', 1, '2025-06-05 15:07:27'),
-(69, 8, 5, '[FINAL]', 'asd', 0, '2025-06-05 15:07:27'),
-(70, 1, 7, '[FINAL]', 'ghgh', 1, '2025-06-05 15:09:35'),
-(71, 8, 7, '[FINAL]', 'ghgh', 0, '2025-06-05 15:09:35'),
-(72, 1, 6, '[FINAL]', 'hghg', 0, '2025-06-05 15:27:46'),
-(73, 8, 6, '[FINAL]', 'hghg', 0, '2025-06-05 15:27:46'),
-(74, 1, 10, '[FINAL]', 'ghgh', 0, '2025-06-05 15:30:26'),
-(75, 8, 10, '[FINAL]', 'ghgh', 0, '2025-06-05 15:30:26');
+(6, 1, 9, 'hai', 'jangn lupa besok indo final cuy', 1, '2025-06-01 14:09:55');
 
 -- --------------------------------------------------------
 
@@ -430,12 +401,12 @@ CREATE TABLE `pertandingan` (
 --
 
 INSERT INTO `pertandingan` (`id`, `team1`, `team2`, `tanggal`, `lokasi`, `skor1`, `skor2`, `status`, `notifikasi`) VALUES
-(1, 'Indonesia', 'Philippines', '2023-04-30', 'Stadion Olimpiade', 3, 4, 'selesai', 0),
-(2, 'Cambodia', 'Timor-Leste', '2023-04-27', 'Stadion Vinsakha', 5, 2, 'selesai', 0),
+(1, 'Indonesia', 'Philippines', '2023-04-29', 'Stadion Olimpiade', 3, 4, 'selesai', 0),
+(2, 'Cambodia', 'Timor-Leste', '2023-04-29', 'Stadion Vinsakha', 1, 2, 'selesai', 0),
 (3, 'Thailand', 'Singapore', '2023-04-30', 'Stadion Vinsakha', 2, 2, 'selesai', 0),
-(4, 'Vietnam', 'Laos', '2023-04-30', 'Stadion Vinsakha', 1, 1, 'selesai', 0),
+(4, 'Vietnam', 'Laos', '2023-04-30', 'Stadion Vinsakha', NULL, NULL, 'belum_dimulai', 0),
 (5, 'Myanmar', 'Timor-Leste', '2023-05-02', 'Stadion Olimpiade', NULL, NULL, 'belum_dimulai', 0),
-(6, 'Philippines', 'Cambodia', '2023-05-02', 'Stadion Olimpiade', 5, 3, 'selesai', 0),
+(6, 'Philippines', 'Cambodia', '2023-05-02', 'Stadion Olimpiade', NULL, NULL, 'belum_dimulai', 0),
 (7, 'Singapore', 'Vietnam', '2023-05-03', 'Stadion Vinsakha', NULL, NULL, 'belum_dimulai', 0),
 (8, 'Malaysia', 'Laos', '2023-05-03', 'Stadion Vinsakha', NULL, NULL, 'belum_dimulai', 0),
 (9, 'Indonesia', 'Myanmar', '2023-05-04', 'Stadion Olimpiade', NULL, NULL, 'belum_dimulai', 0),
@@ -469,10 +440,45 @@ CREATE TABLE `previews` (
 --
 
 INSERT INTO `previews` (`id`, `judul`, `deskripsi`, `link_youtube`) VALUES
-(1, '[FINAL] Indonesia (5) VS (2) Thailand | SEA GAMES', 'Indonesia menang 5-2 atas Thailand, raih emas SEA Games!\r\n', 'https://www.youtube.com/embed/VCRUS0dWu5U'),
-(2, '[SEMIFINAL] Indonesia VS Vietnam| SEA GAMES ', 'Pertarungan sengit menuju babak final SEA Games.', 'https://www.youtube.com/embed/M6_zfD1eruA'),
-(3, '[GRUP A] Indonesia VS Filipina | SEA GAMES ', 'Laga pembuka penuh ambisi timnas Indonesia.', 'https://www.youtube.com/embed/bRzxpKY4Jz0'),
-(4, '[GRUP B] Thailand VS Malaysia | SEA GAMES ', 'Laga krusial dua rival kuat regional.', 'https://www.youtube.com/embed/qU4540-Kie0');
+(1, '[FINAL] Indonesia (5) VS (2) Thailand | SEA GAMES ', 'Indonesia menang 5-2 atas Thailand, raih emas SEA Games!\r\n', 'https://www.youtube.com/embed/VCRUS0dWu5U'),
+(2, 'template judul (2)dua', 'template deskripsi (2)', 'template link youtube (2)'),
+(3, 'template judul (3)', 'template deskripsi (3)', 'template link youtube (3)'),
+(4, 'template judul (4)', 'template deskripsi (4)', 'template link youtube (4)');
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `statistik_pertandingan`
+--
+
+CREATE TABLE `statistik_pertandingan` (
+  `pertandingan_id` int(11) NOT NULL,
+  `team_number` int(11) NOT NULL,
+  `id_negara` int(11) DEFAULT NULL,
+  `judul` varchar(20) NOT NULL,
+  `skor` int(11) DEFAULT 0,
+  `penguasaan_bola` int(11) DEFAULT 0,
+  `tembakan` int(11) DEFAULT 0,
+  `tembakan_tepat` int(11) DEFAULT 0,
+  `operan_tepat_sasaran` int(11) DEFAULT 0,
+  `akurasi_operan` float DEFAULT 0,
+  `peluang_tercipta` int(11) DEFAULT 0,
+  `umpan_silang` int(11) DEFAULT 0,
+  `tackles` int(11) DEFAULT 0,
+  `intercepts` int(11) DEFAULT 0,
+  `clearances` int(11) DEFAULT 0,
+  `stadion` varchar(20) NOT NULL,
+  `tanggal` varchar(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data untuk tabel `statistik_pertandingan`
+--
+
+INSERT INTO `statistik_pertandingan` (`pertandingan_id`, `team_number`, `id_negara`, `judul`, `skor`, `penguasaan_bola`, `tembakan`, `tembakan_tepat`, `operan_tepat_sasaran`, `akurasi_operan`, `peluang_tercipta`, `umpan_silang`, `tackles`, `intercepts`, `clearances`, `stadion`, `tanggal`) VALUES
+(1, 1, 3, 'Final Sea Games 2025', 106, 10, 0, 0, 0, 10, 0, 80, 0, 0, 0, 'Stadion Utama', '2025-05-31'),
+(1, 2, 1, 'Final Sea Games 2025', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Stadion Utama', '2025-05-31'),
+(2, 2, 10, '', 1, 20, 0, 0, 0, 0, 0, 0, 0, 0, 0, '', '');
 
 -- --------------------------------------------------------
 
@@ -493,9 +499,22 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id_user`, `nama`, `email`, `password`, `notifikasi`) VALUES
-(1, 'Warid Akbar', 'user1@gmail.com', '000', 1),
+(1, 'Warid Akbar', 'user1@gmail.com', '111', 1),
 (4, 'Diandra Mayliza', 'user2@gmail.com', '098', 0),
-(8, 'dian', 'user20@gmail.com', '123', 1);
+(5, 'dian', 'sisfo@gmail.com', '1010', 0);
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `user_preferences`
+--
+
+CREATE TABLE `user_preferences` (
+  `id` int(11) NOT NULL,
+  `id_user` int(11) NOT NULL,
+  `id_negara` int(11) NOT NULL,
+  `notifikasi_aktif` tinyint(1) DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Indexes for dumped tables
@@ -516,10 +535,24 @@ ALTER TABLE `klasemen`
   ADD KEY `id_negara` (`id_negara`);
 
 --
+-- Indeks untuk tabel `last_match`
+--
+ALTER TABLE `last_match`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indeks untuk tabel `negara`
 --
 ALTER TABLE `negara`
   ADD PRIMARY KEY (`id_negara`);
+
+--
+-- Indeks untuk tabel `notifications`
+--
+ALTER TABLE `notifications`
+  ADD PRIMARY KEY (`id_notifikasi`),
+  ADD KEY `id_user` (`id_user`),
+  ADD KEY `id_negara` (`id_negara`);
 
 --
 -- Indeks untuk tabel `notifikasi`
@@ -543,11 +576,25 @@ ALTER TABLE `pertandingan`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indeks untuk tabel `statistik_pertandingan`
+--
+ALTER TABLE `statistik_pertandingan`
+  ADD PRIMARY KEY (`pertandingan_id`,`team_number`);
+
+--
 -- Indeks untuk tabel `users`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id_user`),
   ADD UNIQUE KEY `email` (`email`);
+
+--
+-- Indeks untuk tabel `user_preferences`
+--
+ALTER TABLE `user_preferences`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `id_user` (`id_user`),
+  ADD KEY `id_negara` (`id_negara`);
 
 --
 -- AUTO_INCREMENT untuk tabel yang dibuang
@@ -557,25 +604,37 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT untuk tabel `klasemen`
 --
 ALTER TABLE `klasemen`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
+-- AUTO_INCREMENT untuk tabel `last_match`
+--
+ALTER TABLE `last_match`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT untuk tabel `negara`
 --
 ALTER TABLE `negara`
-  MODIFY `id_negara` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+  MODIFY `id_negara` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+
+--
+-- AUTO_INCREMENT untuk tabel `notifications`
+--
+ALTER TABLE `notifications`
+  MODIFY `id_notifikasi` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT untuk tabel `notifikasi`
 --
 ALTER TABLE `notifikasi`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=76;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT untuk tabel `pemain`
 --
 ALTER TABLE `pemain`
-  MODIFY `id_pemain` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=202;
+  MODIFY `id_pemain` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=189;
 
 --
 -- AUTO_INCREMENT untuk tabel `pertandingan`
@@ -587,7 +646,13 @@ ALTER TABLE `pertandingan`
 -- AUTO_INCREMENT untuk tabel `users`
 --
 ALTER TABLE `users`
-  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT untuk tabel `user_preferences`
+--
+ALTER TABLE `user_preferences`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
@@ -598,6 +663,13 @@ ALTER TABLE `users`
 --
 ALTER TABLE `klasemen`
   ADD CONSTRAINT `klasemen_ibfk_1` FOREIGN KEY (`id_negara`) REFERENCES `negara` (`id_negara`);
+
+--
+-- Ketidakleluasaan untuk tabel `notifications`
+--
+ALTER TABLE `notifications`
+  ADD CONSTRAINT `notifications_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `users` (`id_user`),
+  ADD CONSTRAINT `notifications_ibfk_2` FOREIGN KEY (`id_negara`) REFERENCES `negara` (`id_negara`);
 
 --
 -- Ketidakleluasaan untuk tabel `notifikasi`
@@ -611,6 +683,13 @@ ALTER TABLE `notifikasi`
 --
 ALTER TABLE `pemain`
   ADD CONSTRAINT `pemain_ibfk_1` FOREIGN KEY (`id_negara`) REFERENCES `negara` (`id_negara`);
+
+--
+-- Ketidakleluasaan untuk tabel `user_preferences`
+--
+ALTER TABLE `user_preferences`
+  ADD CONSTRAINT `user_preferences_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `users` (`id_user`),
+  ADD CONSTRAINT `user_preferences_ibfk_2` FOREIGN KEY (`id_negara`) REFERENCES `negara` (`id_negara`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
