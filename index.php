@@ -2,8 +2,6 @@
 include 'koneksi.php';
 session_start();
 
-$sql = "SELECT * FROM last_match ORDER BY id DESC LIMIT 1";
-$match = $koneksi->query($sql)->fetch_assoc();
 
 $notifikasi = [];
 if (isset($_SESSION['user_id'])) {
